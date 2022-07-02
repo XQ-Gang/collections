@@ -4,21 +4,21 @@ import (
 	"reflect"
 )
 
-type list []any
+type _list []any
 
-func List(elems ...any) list {
-	l := list(elems)
+func List(elems ...any) _list {
+	l := _list(elems)
 	return l
 }
 
-func (l *list) Append(elem any) {
+func (l *_list) Append(elem any) {
 	*l = append(*l, elem)
 }
 
-func (l *list) Pop() any {
+func (l *_list) Pop() any {
 	size := len(*l)
 	if size == 0 {
-		panic("pop from empty list")
+		panic("pop from empty _list")
 	}
 	last := (*l)[size-1]
 	*l = (*l)[:size-1]
@@ -30,13 +30,13 @@ func equal(elem1, elem2 any) bool {
 		return false
 	}
 	switch elem1.(type) {
-	case list:
-		return elem1.(list).Equals(elem2.(list))
+	case _list:
+		return elem1.(_list).Equals(elem2.(_list))
 	}
 	return elem1 == elem2
 }
 
-func (l list) Equals(_l list) bool {
+func (l _list) Equals(_l _list) bool {
 	if len(l) != len(_l) {
 		return false
 	}
@@ -48,7 +48,7 @@ func (l list) Equals(_l list) bool {
 	return true
 }
 
-func (l list) Index(elem any) any {
+func (l _list) Index(elem any) any {
 	for i, item := range l {
 		if equal(item, elem) {
 			return i
@@ -57,11 +57,11 @@ func (l list) Index(elem any) any {
 	return -1
 }
 
-func (l *list) Extend(_l list) {
+func (l *_list) Extend(_l _list) {
 	*l = append(*l, _l...)
 }
 
-func (l list) Count(elem any) any {
+func (l _list) Count(elem any) any {
 	count := 0
 	for _, item := range l {
 		if equal(item, elem) {
@@ -69,4 +69,14 @@ func (l list) Count(elem any) any {
 		}
 	}
 	return count
+}
+
+func (l *_list) Clear() {
+	*l = List()
+}
+
+func (l _list) Copy() _list {
+	_l := make(_list, len(l))
+	copy(_l, l)
+	return _l
 }

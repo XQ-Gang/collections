@@ -145,3 +145,30 @@ func TestList_Count(t *testing.T) {
 		t.Errorf("list.Count(List(1, List(1))) = %v, want %v", got, want)
 	}
 }
+
+func TestList_Clear(t *testing.T) {
+	list := List(1, 3.14, "2", [...]int{1, 2}, List(1))
+	list.Clear()
+	want := List()
+	if !list.Equals(want) {
+		t.Errorf("list.Clear(), list = %v, want %v", list, want)
+	}
+}
+
+func TestList_Copy(t *testing.T) {
+	list := List(1, 2, 3, 4)
+	copied := list.Copy()
+	list[1] = 0
+
+	got := list[1]
+	want := 0
+	if got != want {
+		t.Errorf("list.Copy(), list[1] = %v, want %v", copied[1], want)
+	}
+
+	got = copied[1]
+	want = 2
+	if got != want {
+		t.Errorf("list.Copy(), copied[1] = %v, want %v", copied[1], want)
+	}
+}
