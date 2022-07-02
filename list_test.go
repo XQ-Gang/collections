@@ -108,3 +108,40 @@ func TestList_Index(t *testing.T) {
 		t.Errorf("list.Index(List(1)) = %v, want %v", got, want)
 	}
 }
+
+func TestList_Extend(t *testing.T) {
+	list := List(1)
+	list.Extend(List(2))
+	want := List(1, 2)
+	if !list.Equals(want) {
+		t.Errorf("list.Extend(List(2)), list = %v, want %v", list, want)
+	}
+
+	list.Extend(List(List(3)))
+	want = List(1, 2, List(3))
+	if !list.Equals(want) {
+		t.Errorf("list.Extend(List(List(3))), list = %v, want %v", list, want)
+	}
+}
+
+func TestList_Count(t *testing.T) {
+	list := List(1, 1, 1, 1)
+	got := list.Count(1)
+	want := 4
+	if got != want {
+		t.Errorf("list.Count(1) = %v, want %v", got, want)
+	}
+
+	got = list.Count(0)
+	want = 0
+	if got != want {
+		t.Errorf("list.Count(0) = %v, want %v", got, want)
+	}
+
+	list = List(1, List(1, List(1)), List(1, List(1)))
+	got = list.Count(List(1, List(1)))
+	want = 2
+	if got != want {
+		t.Errorf("list.Count(List(1, List(1))) = %v, want %v", got, want)
+	}
+}

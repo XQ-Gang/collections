@@ -36,12 +36,12 @@ func equal(elem1, elem2 any) bool {
 	return elem1 == elem2
 }
 
-func (l list) Equals(l2 list) bool {
-	if len(l) != len(l2) {
+func (l list) Equals(_l list) bool {
+	if len(l) != len(_l) {
 		return false
 	}
 	for i := range l {
-		if !equal(l[i], l2[i]) {
+		if !equal(l[i], _l[i]) {
 			return false
 		}
 	}
@@ -55,4 +55,18 @@ func (l list) Index(elem any) any {
 		}
 	}
 	return -1
+}
+
+func (l *list) Extend(_l list) {
+	*l = append(*l, _l...)
+}
+
+func (l list) Count(elem any) any {
+	count := 0
+	for _, item := range l {
+		if equal(item, elem) {
+			count++
+		}
+	}
+	return count
 }
