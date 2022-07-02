@@ -37,6 +37,13 @@ func TestList_String(t *testing.T) {
 	if got != want {
 		t.Errorf("%%v = %v, want %v", got, want)
 	}
+
+	list = List(1, List(1, List(1, List(1))))
+	got = fmt.Sprintf("%v", list)
+	want = "[1 [1 [1 [1]]]]"
+	if got != want {
+		t.Errorf("%%v = %v, want %v", got, want)
+	}
 }
 
 func TestList_Append(t *testing.T) {
@@ -64,4 +71,40 @@ func TestList_Pop(t *testing.T) {
 	}()
 	elist := List()
 	elist.Pop()
+}
+
+func TestList_Equals(t *testing.T) {
+	list := List(1, 3.14, "2", [...]int{1, 2}, List(1, List()))
+	got := list.Equals(list)
+	want := true
+	if got != want {
+		t.Errorf("list.Equals(list) = %v, want %v", got, want)
+	}
+
+	got = list.Equals(List())
+	want = false
+	if got != want {
+		t.Errorf("list.Equals(List()) = %v, want %v", got, want)
+	}
+}
+
+func TestList_Index(t *testing.T) {
+	list := List(1, 3.14, "2", [...]int{1, 2}, List(1))
+	got := list.Index([2]int{1, 2})
+	want := 3
+	if got != want {
+		t.Errorf("list.Index([2]int{1, 2}) = %v, want %v", got, want)
+	}
+
+	got = list.Index(5)
+	want = -1
+	if got != want {
+		t.Errorf("list.Index(5) = %v, want %v", got, want)
+	}
+
+	got = list.Index(List(1))
+	want = 4
+	if got != want {
+		t.Errorf("list.Index(List(1)) = %v, want %v", got, want)
+	}
 }
