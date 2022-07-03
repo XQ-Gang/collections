@@ -172,3 +172,43 @@ func TestList_Copy(t *testing.T) {
 		t.Errorf("list.Copy(), copied[1] = %v, want %v", copied[1], want)
 	}
 }
+
+func TestList_Reverse(t *testing.T) {
+	list := List(1, 2, 3, 4)
+	list.Reverse()
+	want := List(4, 3, 2, 1)
+	if !list.Equals(want) {
+		t.Errorf("list.Reverse(), list = %v, want %v", list, want)
+	}
+}
+
+func TestList_Insert(t *testing.T) {
+	list := List(1)
+	list.Insert(0, "a")
+	list.Insert(1, "b")
+	list.Insert(3, "c")
+	list.Insert(-10, "d")
+	list.Insert(10, "e")
+	want := List("d", "a", "b", 1, "c", "e")
+	if !list.Equals(want) {
+		t.Errorf("list.Insert(), list = %v, want %v", list, want)
+	}
+}
+
+func TestList_Remove(t *testing.T) {
+	list := List(1, 2, 3, 4, 5, 4, 3, 2, 1)
+	list.Remove(1)
+	list.Remove(5)
+	list.Remove(1)
+	want := List(2, 3, 4, 4, 3, 2)
+	if !list.Equals(want) {
+		t.Errorf("list.Remove(), list = %v, want %v", list, want)
+	}
+
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("list.Remove(0) = nil, want panic(\"List.Remove(x): x not in List\")")
+		}
+	}()
+	list.Remove(0)
+}
